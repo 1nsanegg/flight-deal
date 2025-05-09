@@ -8,8 +8,8 @@ class DataManager:
 
     # This class is responsible for talking to the Google Sheet.
     def __init__(self):
-        self.sheety_token = os.getenv("sheety_bearer_token")
-        self.sheety_header = {"Authorization": f"{self.sheety_token}"}
+        self.sheety_token = os.getenv("SHEETY_BEAR_TOKEN")
+        self.sheety_header = {"Authorization": f"Bearer {self.sheety_token}"}
 
     # This function get data from Google sheet
     def get_data(self):
@@ -24,7 +24,7 @@ class DataManager:
                 print("Error: prices key not found in the response.")
                 return []
         else:
-            print(f"Received status code {response.status_code}")
+            print(f"Received status code {response.status_code} from {sheety_get_endpoint}")
             return []
 
     # This function update data in Google sheet
@@ -40,5 +40,5 @@ class DataManager:
         if response.status_code == 200:
             print("Data updated successfully")
         else:
-            print(f"Failed to update data. Status code {response.status_code}")
+            print(f"Failed to update data from . Status code {response.status_code}")
             print(response.text)

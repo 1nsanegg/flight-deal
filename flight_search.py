@@ -10,8 +10,8 @@ class FlightSearch:
     load_dotenv()
 
     def __init__(self):
-        self.amadeus_api_key = os.getenv("amadeus_api_key")
-        self.amadeus_api_secret = os.getenv("amadeus_api_secret")
+        self.amadeus_api_key = os.getenv("AMADEUS_API_KEY")
+        self.amadeus_api_secret = os.getenv("AMADEUS_SECRET_KEY")
 
     def get_new_token(self):
         header = {
@@ -32,7 +32,7 @@ class FlightSearch:
                 print("Error: access_token key not found in the response.")
                 return []
         else:
-            print(f"Received status code {response.status_code}")
+            print(f"Received status code {response.status_code} from {get_token_endpoint}")
             return []
 
     @staticmethod
@@ -91,7 +91,7 @@ class FlightSearch:
                 print("data key not found.")
                 return []
         else:
-            print(f"Received status code {response.status_code}")
+            print(f"Received status code {response.status_code} from {fight_offers_endpoint}")
             return []
 
 
