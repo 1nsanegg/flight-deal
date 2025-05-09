@@ -25,6 +25,11 @@ for data in sheety_data_after_updated:
 
     cheapest_flight = FlightData.find_cheapest_flight(all_city_available_flight)
     print(f"Getting flights for {city} .....")
+    if cheapest_flight is None:
+        print(f"No direct flights found for {city}. Trying with stopovers...")
+        stopover_flight = flight_search.search_fight_offers(city_iata_code, amadeus_access_token,
+                                                                      is_direct=False)
+        cheapest_flight = FlightData.find_cheapest_flight(stopover_flight)
 
     if cheapest_flight is None:
         print(f"{city} : N/A")

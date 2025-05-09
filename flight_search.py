@@ -68,17 +68,22 @@ class FlightSearch:
                 return None
 
     @staticmethod
-    def search_fight_offers(destination_location_code, token):
+    def search_fight_offers(destination_location_code, token, is_direct=True):
         fight_offers_endpoint = "https://test.api.amadeus.com/v2/shopping/flight-offers"
         departure_date = datetime.datetime.now() + datetime.timedelta(days=1)
         return_date = datetime.datetime.now() + datetime.timedelta(weeks=26)
+        non_stop = ""
+        if is_direct:
+            non_stop = "true"
+        else:
+            non_stop = "false"
         param = {
             "originLocationCode": "LON",
             "destinationLocationCode": destination_location_code,
             "departureDate": departure_date.strftime("%Y-%m-%d"),
             "returnDate": return_date.strftime("%Y-%m-%d"),
             "adults": 1,
-            "nonStop": "true",
+            "nonStop": non_stop,
             "currencyCode": "GBP"
         }
         header = {"Authorization": f"Bearer {token}"}

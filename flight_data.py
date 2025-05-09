@@ -3,14 +3,14 @@ from dotenv import load_dotenv
 
 class FlightData:
     # This class is responsible for structuring the flight data.
-    def __init__(self, original_location_code, destination_location_code, departure_date, return_date, price):
+    def __init__(self, original_location_code, destination_location_code, departure_date, return_date, price, stops):
         load_dotenv()
         self.original_location_code = original_location_code
         self.destination_location_code = destination_location_code
         self.departure_date = departure_date
         self.return_date = return_date
         self.price = price
-
+        self.stops = stops
     @staticmethod
     def find_cheapest_flight(data):
         if not data:
@@ -23,9 +23,9 @@ class FlightData:
                 price = float(flight["price"]["total"])
                 segments = flight['itineraries'][0]['segments']
                 original_location_code = segments[0]['departure']['iataCode']
-                destination_location_code = segments[0]['arrival']['iataCode']
+                destination_location_code = segments[len(segments) - 1]['arrival']['iataCode']
                 departure_date = segments[0]['departure']['at'].split("T")[0]
-
+                stops = len(segments)
                 # Optional return date (if round-trip)
                 return_date = None
                 if len(flight['itineraries']) > 1:
@@ -39,7 +39,8 @@ class FlightData:
                         destination_location_code,
                         departure_date,
                         return_date,
-                        price
+                        price,
+                        stops
                     )
             except (KeyError, IndexError, ValueError) as e:
                 print(f"Skipped a flight due to error: {e}")
