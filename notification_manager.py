@@ -12,13 +12,13 @@ class NotificationManager:
         self.PASSWORD = os.getenv("PASSWORD")
         self.flight_info = flight_info
 
-    def send_email(self):
+    def send_email(self, email):
         msg = EmailMessage()
         msg.set_content(
             f"Low price alert! Only ${self.flight_info.price} to fly from {self.flight_info.original_location_code} to {self.flight_info.destination_location_code}, on {self.flight_info.departure_date}")
         msg["Subject"] = "Let's go"
         msg["From"] = "trevorkhuat@gmail.com"
-        msg["To"] = "tuan1214502@gmail.com"
+        msg["To"] = email
 
         with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
             connection.starttls()

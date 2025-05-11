@@ -8,15 +8,15 @@ from notification_manager import NotificationManager
 
 data_manager = DataManager()
 flight_search = FlightSearch()
-
+user_list = data_manager.get_user_email()
 amadeus_access_token = flight_search.get_new_token()
-sheety_data = data_manager.get_data()
+sheety_data = data_manager.get_prices_sheet_data()
 # Update the iata_code with actual value if it's empty
 for data in sheety_data:
     if data["iataCode"] == '':
         data["iataCode"] = flight_search.get_iataCode(data["city"], amadeus_access_token)
-        data_manager.update_data(data)
-sheety_data_after_updated = data_manager.get_data()
+        data_manager.update_price_sheet_data(data)
+sheety_data_after_updated = data_manager.get_prices_sheet_data()
 
 for data in sheety_data_after_updated:
     city = data["city"]
@@ -38,6 +38,8 @@ for data in sheety_data_after_updated:
             print(f"{city}: {cheapest_flight.price}")
             if float(cheapest_flight.price) < float(data["lowestPrice"]):
                 notification_manager = NotificationManager(cheapest_flight)
-                notification_manager.send_email()
+                for user in user_list:
+                    notification_manager.send_email(user)
         except ValueError:
             print(f"Invalid lowest price for {city}: {data['lowestPrice']}")
+
